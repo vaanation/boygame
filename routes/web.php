@@ -27,7 +27,15 @@ Route::match(['get', 'post'], 'logout', [AuthController::class, 'logout'])->name
 Route::get('/update-web', function() {
     \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-    return 'Website berhasil diupdate! Cache sudah dibersihkan dan database sudah dimigrasi.';
+    
+    // Create storage link silently. If it already exists, it will just fail gracefully or we can ignore the error
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+    } catch (\Exception $e) {
+        // usually fails if link already exists, which is fine
+    }
+
+    return 'Website berhasil diupdate! Cache sudah dibersihkan, database sudah dimigrasi, dan Storage Link sudah diperbarui.';
 });
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {

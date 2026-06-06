@@ -24,6 +24,12 @@ Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('login.post');
 Route::match(['get', 'post'], 'logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/update-web', function() {
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+    return 'Website berhasil diupdate! Cache sudah dibersihkan dan database sudah dimigrasi.';
+});
+
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('accounts', AccountController::class);

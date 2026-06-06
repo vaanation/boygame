@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     @stack('styles')
 </head>
-<body>
+<body style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary-custom sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">

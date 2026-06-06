@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 class AccountFrontController extends Controller {
     public function index(Request $request) {
-        $query = Account::with('images');
+        $query = Account::with('images')->where('is_jastip', false);
 
         if ($request->filled('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
@@ -23,6 +23,27 @@ class AccountFrontController extends Controller {
         $categories = \App\Models\Category::orderBy('name')->get();
 
         return view('front.accounts.index', compact('accounts', 'categories'));
+    }
+
+    public function jastip(Request $request) {
+        $query = Account::with('images')->where('is_jastip', true);
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        $accounts = $query->latest()->paginate(12)->appends($request->all());
+        $categories = \App\Models\Category::orderBy('name')->get();
+
+        return view('front.accounts.jastip', compact('accounts', 'categories'));
     }
     public function show(Request $request, $slug) {
         $account = Account::with('images', 'category')->where('slug', $slug)->firstOrFail();

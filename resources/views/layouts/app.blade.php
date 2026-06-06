@@ -61,8 +61,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('accounts.*') ? 'active fw-bold' : '' }}" href="{{ route('accounts.index') }}">
+                        <a class="nav-link {{ request()->routeIs('accounts.index') ? 'active fw-bold' : '' }}" href="{{ route('accounts.index') }}">
                             <i class="fas fa-gamepad me-1"></i> Akun
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('accounts.jastip') ? 'active fw-bold' : '' }}" href="{{ route('accounts.jastip') }}">
+                            <i class="fas fa-handshake me-1"></i> Jastip Akun
                         </a>
                     </li>
                     <li class="nav-item">

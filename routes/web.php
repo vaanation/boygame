@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\SettingController;
 
 Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/accounts', [AccountFrontController::class, 'index'])->name('accounts.index');
+Route::get('/jastip', [AccountFrontController::class, 'jastip'])->name('accounts.jastip');
 Route::get('/accounts/{slug}', [AccountFrontController::class, 'show'])->name('accounts.show');
 Route::post('/accounts/{slug}/share', [AccountFrontController::class, 'share'])->name('accounts.share');
 Route::get('/topup', [TopupFrontController::class, 'index'])->name('topup.index');

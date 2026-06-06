@@ -8,9 +8,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class AccountController extends Controller {
-    public function index() {
-        $accounts = Account::with('category')->latest()->get();
-        return view('admin.accounts.index', compact('accounts'));
+    public function index(Request $request) {
+        $query = Account::with('category');
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+        if ($request->filled('type')) {
+            $query->where('is_jastip', $request->type === 'jastip');
+        }
+
+        $accounts = $query->latest()->paginate(15)->appends($request->all());
+        $categories = Category::all();
+
+        return view('admin.accounts.index', compact('accounts', 'categories'));
     }
     public function create() {
         $categories = Category::all();
@@ -33,6 +50,7 @@ class AccountController extends Controller {
             'description' => $request->description,
             'status' => $request->status ?? 'Tersedia',
             'whatsapp_number' => $request->whatsapp_number,
+            'is_jastip' => $request->has('is_jastip'),
         ]);
 
         if($request->hasFile('images')) {
@@ -56,7 +74,9 @@ class AccountController extends Controller {
             'whatsapp_number' => 'nullable|string',
         ]);
 
-        $account->update($request->only(['title', 'category_id', 'price', 'description', 'status', 'whatsapp_number']));
+        $data = $request->only(['title', 'category_id', 'price', 'description', 'status', 'whatsapp_number']);
+        $data['is_jastip'] = $request->has('is_jastip');
+        $account->update($data);
 
         // Process combined image order
         $newUploadedPaths = [];

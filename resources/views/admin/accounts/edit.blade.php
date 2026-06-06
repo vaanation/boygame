@@ -39,6 +39,13 @@
                     <input type="text" name="whatsapp_number" class="form-control" value="{{ $account->whatsapp_number }}">
                     <small class="text-muted d-block mt-1" style="font-size: 0.75rem; line-height: 1.2;">Jika dikosongkan, tombol beli otomatis menggunakan <b>Nomor WA Utama</b> di menu Pengaturan.</small>
                 </div>
+                <div class="col-md-12 mb-3">
+                    <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="is_jastip" name="is_jastip" value="1" {{ $account->is_jastip ? 'checked' : '' }}>
+                        <label class="form-check-label fw-bold" for="is_jastip">Jastip Akun</label>
+                        <small class="text-muted d-block" style="font-size: 0.75rem;">Jika diaktifkan, akun ini akan masuk ke halaman Jastip Akun.</small>
+                    </div>
+                </div>
                 
                 <div class="col-12 mb-4 mt-3">
                     <label class="fw-bold text-primary d-flex align-items-center gap-2">
